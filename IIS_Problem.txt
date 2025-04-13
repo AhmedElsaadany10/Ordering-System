@@ -1,0 +1,11 @@
+-- إنشاء Login للحساب
+CREATE LOGIN [IIS APPPOOL\PublishAPIDotNet] FROM WINDOWS;
+
+-- الدخول على قاعدة البيانات
+USE BMBTask;
+
+-- إنشاء مستخدم داخل قاعدة البيانات وربطه بالـ Login
+CREATE USER [IIS APPPOOL\PublishAPIDotNet] FOR LOGIN [IIS APPPOOL\PublishAPIDotNet];
+
+-- إعطاؤه صلاحية كاملة على قاعدة البيانات (db_owner)
+EXEC sp_addrolemember 'db_owner', [IIS APPPOOL\PublishAPIDotNet];
