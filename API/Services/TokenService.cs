@@ -8,9 +8,9 @@ namespace API.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _config;
+        private readonly JwtSettings _config;
 
-        public TokenService(IConfiguration config)
+        public TokenService(JwtSettings config)
         {
             _config = config;
         }
@@ -24,21 +24,21 @@ namespace API.Services
             new Claim(ClaimTypes.Role,customer.Role.ToString())
         };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Key));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddHours(Convert.ToDouble(_config["Jwt:ExpiresInHours"])),
-                Issuer = _config["Jwt:Issuer"],
-                Audience = _config["Jwt:Audience"],
+                Expires = DateTime.Now.AddHours(Convert.ToDouble(_config.ExpiresInHours)),
+                Issuer = _config.Issuer,
+                Audience = _config.Audience,
                 SigningCredentials = creds
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
+             
             return tokenHandler.WriteToken(token);
         }
     }

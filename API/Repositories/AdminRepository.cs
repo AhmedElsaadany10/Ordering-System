@@ -42,7 +42,7 @@ namespace API.Repositories
                 Id = c.Id,
                 Username = c.Username,
                 Role = c.Role,
-                BannedUntil = c.BannedUntil.HasValue && c.BannedUntil.Value != DateTime.MinValue
+                BannedUntil = c.BannedUntil.HasValue && c.BannedUntil.Value >= DateTime.Now
                 ? c.BannedUntil.Value.ToString("ddd dd MMM yyyy hh:mm tt")
         : ""
             }).ToList();
