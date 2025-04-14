@@ -15,7 +15,7 @@ A simple ordering system built with ASP.NET Core Web API for the backend and HTM
 This feature is implemented using a **middleware** in the backend.
 
 ### Admin:
-- There is only one admin.
+- There is only one admin ( username: admin | password: admin ).
 - The admin can add and update products (through the API only).
 - Has Two Sections
     #### Poducts
