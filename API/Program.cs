@@ -26,7 +26,6 @@ namespace API
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
-            builder.Services.AddSingleton(jwtSettings);
 
             var key = Encoding.UTF8.GetBytes(jwtSettings.Key);
 
@@ -49,6 +48,7 @@ namespace API
                 };
             });
 
+            builder.Services.AddSingleton(jwtSettings);
             builder.Services.AddScoped<ITokenService,TokenService >();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
