@@ -2,7 +2,6 @@ const API_BASE = 'https://localhost:8090/api';
 let products = [];
 let orders = [];
 let user =localStorage.getItem('userData')? JSON.parse(localStorage.getItem('userData')):{};
-console.log(user);
 let currentEditingproduct = null;
 function isAuthenticated() {
   return !!localStorage.getItem('userData');
@@ -26,7 +25,6 @@ function getUserData(user) {
   const userInfo = `${user.username}`;
   usernameDisplay.innerHTML += userInfo;
 }
-
 //////set ban tab
 function renderBan(isBan){
   const container = document.getElementById("isBanContainer");
@@ -36,6 +34,7 @@ function renderBan(isBan){
   `<span class="badge bg-success">Active</span>`;
 }
 
+//*************  Get Products  ******************** */
 /////load products from Api
 async function loadProducts() {
   try {
@@ -45,9 +44,7 @@ async function loadProducts() {
       }
     });
     products = await productsRes.json();
-    console.log(products);
     renderProducts(products);
-    //renderOrders(products);
   } catch (error) {
     console.error("Error fetching user or products", error);
   }
@@ -76,6 +73,9 @@ function renderProducts(products) {
   });
 }
 
+
+//*************  Get Orders  ******************** */
+
 /////load orders from Api
 async function loadOrders() {
   try {
@@ -85,7 +85,6 @@ async function loadOrders() {
       }
     });
     orders = await productsRes.json();
-    console.log(orders);
     renderOrders(orders);
   } catch (error) {
     console.error("Error fetching user or products", error);
@@ -114,6 +113,8 @@ function renderOrders(orders) {
   });
 }
 
+//*************  Add Orders  ******************** */
+
 /////create Order
 async function createOrder(productId) {
   const res = await fetch(`${API_BASE}/orders`, {
@@ -134,8 +135,6 @@ async function createOrder(productId) {
         // Add the new product directly to the UI (no need to fetch again)
         const newOrder = await res.json();
         orders.push(newOrder); // Update the products array
-        console.log(newOrder);
-        console.log(orders);
         renderOrders(orders); // Re-render with the new product
         document.querySelector('.btn-close').click(); // Close modal
     }
@@ -146,6 +145,7 @@ async function createOrder(productId) {
 
 }
 
+//*************  Delete Orders  ******************** */
 //delete order
 async function deleteOrder(id) {
   if (confirm("Are you sure you want to delete this Order?")) {
@@ -160,7 +160,6 @@ async function deleteOrder(id) {
       if (res.ok) {
         const data = await res.json();
         alert(data.message); 
-        console.log(data)
         if(data.isBan){
           user.isBan=true;
           localStorage.setItem('userData',JSON.stringify(user))
@@ -184,8 +183,6 @@ async function deleteOrder(id) {
 
     function showOrderDetails(orderId) {
       const order = orders.find(order => order.orderId == orderId);
-      console.log("products" , orders)
-      console.log(order)
       const orderContainer = document.getElementById('orderDetailsContainer');
       if(order){
       orderContainer.innerHTML = `
@@ -194,7 +191,6 @@ async function deleteOrder(id) {
             <p class="card-text">Price : ${order.price}$</p>
             <p class="card-text">Created At :  ${order.createdAt}</p>
     `; }
-    console.log(orderContainer)
 
       // Show the modal with user products
       new bootstrap.Modal(document.getElementById('orderDetailsModal')).show();

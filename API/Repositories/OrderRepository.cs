@@ -32,6 +32,7 @@ namespace API.Repositories
             };
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
+           
             return order;
         }
         public async Task<bool> IsOrderAddedBefore(int customerId, int productId)
@@ -47,6 +48,7 @@ namespace API.Repositories
 
         }
 
+        // get all arders related to customer
         public async Task<IEnumerable<Order>> GetAllOrdersByCustomerAsync(int customerId)
         {
             return await _context.Orders.Include(p=>p.Product)
@@ -78,7 +80,7 @@ namespace API.Repositories
             var customer =await _context.Customers.FindAsync(customerId);
             if (customer != null)
             {
-                customer.BannedUntil = DateTime.Now.AddMinutes(10);
+                customer.BannedUntil = DateTime.Now.AddHours(6);
                 customer.IsBanned = true;
 
             }

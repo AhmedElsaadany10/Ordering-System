@@ -21,7 +21,6 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts() { 
             var products=await _productRepository.GetAllProductsAsync();
-            await _productRepository.SaveChangesAsync();
             return Ok(products);
         }
         [HttpGet("{id}")]
@@ -40,24 +39,25 @@ namespace API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Addproduct([FromBody]Product product)
+        public async Task<IActionResult> Addproduct([FromBody] ProductDto productDto)
         {
-           await _productRepository.AddProductAsync(product);
-            await _productRepository.SaveChangesAsync();
-            return Ok(product);
+           
+                var product = await _productRepository.AddProductAsync(productDto);
+            if (product == null)
+                return BadRequest();
+                return Ok(product);
+            
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> UpdateProduct(int id,[FromBody]ProductDto productDto) {
-            var product = await _productRepository.GetProductByIdAsync(id);
-            if (product == null)
-                return NotFound();
-            product.Name = productDto.Name;
-            product.Description = productDto.Description;
-            product.Price = productDto.Price;
-            await _productRepository.SaveChangesAsync();
-            return Ok(product);
+        public  async Task<IActionResult> UpdateProduct(int id,[FromBody]ProductDto productDto) {
+           
+             var product = await _productRepository.EditProductAsync(id, productDto);
+                if (product == null)
+                    return BadRequest();
+                return Ok(product);
+           
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
@@ -65,8 +65,7 @@ namespace API.Controllers
             var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null)
                 return NotFound();
-            _productRepository.DeleteProductAsync(product);
-            await _productRepository.SaveChangesAsync();
+            await _productRepository.DeleteProductAsync(product);
             return Ok();
         }
     }

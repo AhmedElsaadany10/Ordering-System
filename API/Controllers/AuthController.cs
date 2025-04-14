@@ -37,7 +37,7 @@ namespace API.Controllers
                 PasswordSalt = hmac.Key
             };
             _context.Add(customer);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); 
             var token = _tokenService.GetToken(customer);
             return Ok(new {token});
         

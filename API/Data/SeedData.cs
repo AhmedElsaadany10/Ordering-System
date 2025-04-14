@@ -43,7 +43,12 @@ namespace API.Data
                 new Product { Name = "Smartphone", Description = "Samsung Galaxy S24", Price = 1200 },
                 new Product { Name = "Monitor", Description = "27-inch 4K Display", Price = 400 },
                 new Product { Name = "Keyboard", Description = "Mechanical Keyboard", Price = 100 },
-                new Product { Name = "Mouse", Description = "Wireless Mouse", Price = 50 }
+                new Product { Name = "Mouse", Description = "Wireless Mouse", Price = 50 },
+                new Product { Name = "Tablet", Description = "Apple iPad Pro 11-inch", Price = 999 },
+                new Product { Name = "Headphones", Description = "Sony WH-1000XM5 Noise Cancelling", Price = 350 },
+                new Product { Name = "Webcam", Description = "Logitech 4K Pro Webcam", Price = 200 },
+                new Product { Name = "External Hard Drive", Description = "2TB Portable SSD", Price = 180 },
+                new Product { Name = "Printer", Description = "HP Wireless All-in-One Printer", Price = 250 },
             };
 
                 context.Products.AddRange(products);

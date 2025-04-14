@@ -3,6 +3,7 @@ using API.DTOs;
 using API.Models;
 using API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace API.Repositories
 {
@@ -15,41 +16,51 @@ namespace API.Repositories
             _context = context;
         }
 
-        public  async Task<List<ProductDto>> GetAllProductsAsync()
+        public  async Task<List<Product>> GetAllProductsAsync()
         {
-            var products=await _context.Products.Include(x=>x.Orders).Select(p=>new ProductDto {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                Price = p.Price,
-                
-            }).ToListAsync();
-            return  products;
+            return await _context.Products.Include(x => x.Orders).ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
             return await _context.Products.FindAsync(id);   
         }
-
+        //get all orders for product
         public async Task<IEnumerable<Order>> GetAllOrdersForProductAsync(int productId)
         {
             return await _context.Orders.Include(p => p.Product).Include(c=>c.Customer)
                 .Where(o => o.ProductId == productId).ToListAsync();
         }
-        public async Task AddProductAsync(Product product)
+        public async Task<Product> AddProductAsync(ProductDto productDto)
         {
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Description = productDto.Description,
+                Price = productDto.Price,
+            };
             await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+          return product;
         }
-
-        public void DeleteProductAsync(Product product)
+        public async Task<Product> EditProductAsync(int id,ProductDto productDto)
+        {
+            var product =await _context.Products.FindAsync(id);
+            if (product == null)
+                return null;
+            product.Name = productDto.Name;
+            product.Description = productDto.Description;
+            product.Price = productDto.Price;
+            
+            await _context.SaveChangesAsync();
+            return product;
+        }
+        public async Task DeleteProductAsync(Product product)
         {
             _context.Products.Remove(product);
+           await _context.SaveChangesAsync();
         }
-        public async Task<bool> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
+  
 
         public async Task<bool> IsProductExistAsync(int productId)
         {
@@ -58,5 +69,7 @@ namespace API.Repositories
                 return false;
             return true;
         }
+
+     
     }
 }

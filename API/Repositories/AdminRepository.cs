@@ -16,15 +16,6 @@ namespace API.Repositories
             _context = context;
         }
        
-        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
-        {
-            return await _context.Orders.Include(c=>c.Customer).Include(x=>x.Product).ToListAsync();
-               
-        }
-        public async Task<Order> GetOrderByIdAsync(int id)
-        {
-            return await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
-        }
         public async Task<List<CustomerDto>> GetAllCustomersAsync()
         {
             var customers = await _context.Customers.Where(x=>x.Role!=UserRole.Admin.ToString())

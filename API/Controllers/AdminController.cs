@@ -17,21 +17,6 @@ namespace API.Controllers
             _adminRepository = adminRepository;
         }
 
-        [HttpGet("orders")]
-        public async Task<IActionResult> GetAllOrders()
-        {
-            return Ok(await _adminRepository.GetAllOrdersAsync());
-        }
-        [HttpGet("order/{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
-        {
-            var order=await _adminRepository.GetOrderByIdAsync(id);
-            if (order == null)
-            {
-                return NotFound(new { message = "Order is not found" });
-            }
-            return Ok(order);
-        }
         [HttpGet("customers")]
         
         public async Task<IActionResult> GetAllCustomers()
@@ -42,6 +27,7 @@ namespace API.Controllers
         }
         [HttpGet("orders-customer/{id}")]
         
+        // get all orders for customer
         public async Task<IActionResult> GetCustomerOrders(int id)
         {
             return Ok(await _adminRepository.GetOrdersByCustomerIdAsync(id));

@@ -17,6 +17,15 @@ This feature is implemented using a **middleware** in the backend.
 ### Admin:
 - There is only one admin.
 - The admin can add and update products (through the API only).
+- has two sections
+    #### Poducts
+      - Create New Product
+      - Edit Existing Product 
+      - Delete Product 
+      - View All Customers Who Added This Product to Their Orders
+
+    #### Customers
+      - View All Orders Placed by a Specific Customer
 
 ## Technology Stack
 
