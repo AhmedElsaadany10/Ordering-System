@@ -17,7 +17,7 @@ This feature is implemented using a **middleware** in the backend.
 ### Admin:
 - There is only one admin.
 - The admin can add and update products (through the API only).
-- has two sections
+- Has Two Sections
     #### Poducts
       - Create New Product
       - Edit Existing Product 
