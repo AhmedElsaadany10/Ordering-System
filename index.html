@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Register</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styl.css">
+</head>
+<body class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+
+  <div class="form-container">
+    <h2 class="text-center" id="formTitle">Login</h2>
+    <form id="authForm">
+      <div class="mb-3">
+        <input type="text" class="form-control" id="username" placeholder="Username" required>
+      </div>
+      <div class="mb-3">
+        <input type="password" class="form-control" id="password" placeholder="Password" required>
+      </div>
+      <div class="mb-3 d-none" id="confirmPasswordField">
+        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+      </div>
+      <button type="submit" class="btn btn-primary w-100" id="submitBtn">Login</button>
+    </form>
+
+    <div class="toggle-btn">
+      <small id="toggleText">Don't have an account? <a href="#" onclick="toggleForm()">Register</a></small>
+    </div>
+  </div>
+
+  <script src="js/auth.js">
+    
+  </script>
+
+</body>
+</html>

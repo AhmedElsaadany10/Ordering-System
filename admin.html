@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Welcome, Admin</h2>
+            <button class="btn btn-danger" id="logoutButton" >Logout</button>
+        </div>
+
+        <!-- Tabs for Admin Dashboard -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="products-tab" data-bs-toggle="tab" href="#products" role="tab"
+                    aria-controls="products" aria-selected="true">Products</a>
+            </li> 
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="users-tab" data-bs-toggle="tab" href="#users" role="tab" aria-controls="users"
+                    aria-selected="false">Customers</a>
+            </li>
+        </ul>
+
+        <!-- Tab content -->
+        <div class="tab-content" id="myTabContent">
+               <!-- Products Tab -->
+               <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
+                   <div class="container mt-4">
+                       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createProductModal">Create New Product</button>
+                   </div>
+                <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="productsContainer">
+                      <!-- products will be dynamically added here -->
+                    </tbody>
+                  </table>
+            </div>
+            <!-- Users Tab -->
+            <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+                <h3>Customers</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Status</th>
+                            <th>Banned Until</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                        <!-- User data will be added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+  
+    <!-- Create product Modal -->
+  <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createProductModalLabel">Create Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="productName" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="productName" required>
+          </div>
+          <div class="mb-3">
+            <label for="productDescription" class="form-label">Product Description</label>
+            <textarea class="form-control" id="productDescription" rows="3" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="productPrice" class="form-label">Product Price</label>
+            <input class="form-control" id="productPrice" rows="3" required></input>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="createProduct()">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Edit product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="editProductName" class="form-label">Product Name</label>
+              <input type="text" class="form-control" id="editProductName" required>
+            </div>
+            <div class="mb-3">
+              <label for="editProductDescription" class="form-label">Product Description</label>
+              <textarea class="form-control" id="editProductDescription" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="editProductPrice" class="form-label">Product Price</label>
+                <input class="form-control" id="editProductPrice"  required></input>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-close-edit" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="updateProduct()">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- Modal for Viewing Customer Orders -->
+      <div class="modal fade" id="userOrdersModal" tabindex="-1" aria-labelledby="userOrdersModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="userOrdersModalLabel">Customer Orders</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Price</th>
+                          <th scope="col">CreatedAt </th>
+                        </tr>
+                      </thead>
+                      <tbody id="userOrdersContainer">
+                          <!-- User orders will be dynamically added here  -->
+                      </tbody>
+                    </table>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+    <!-- Modal for Viewing Customer Orders -->
+    <div class="modal fade" id="productCustomersModal" tabindex="-1" aria-labelledby="productCustomersModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productCustomersModalLabel">Product Customers</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">CreatedAt </th>
+                          </tr>
+                        </thead>
+                        <tbody id="productCustomersContainer">
+                            <!-- User orders will be dynamically added here  -->
+                        </tbody>
+                      </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
